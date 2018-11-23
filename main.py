@@ -1,5 +1,11 @@
+import os
 from flask import Flask, abort, render_template, request
-from relay import Relay
+if os.getenv("LOGNAME", None) == "adamaru":
+	# for debugging purposes on my host computer
+	from fakerelay import Relay
+else:
+	from relay import Relay
+
 app = Flask(__name__, template_folder="./templates/")
 
 DB = "states.json"
@@ -19,7 +25,7 @@ def main():
 def set_relay_state(port, state):
 	try:
 		port = int(port)
-		state = bool(state)
+		state = state == "1"
 		Relay(database=DB).setEnabled(port, state)
 		return "OK\n"
 	except (ValueError, TypeError) as e:
@@ -45,7 +51,11 @@ def reset():
 def set_state():
 	try:
 		idx = int(request.form['index'])
-		state = bool(request.form['state'])
+		if 'state' in request.form:
+			print("state here", request.form['state'])
+			state = request.form['state'] == "1" or request.form['state'] == 'on'
+		else:
+			state = False
 	except ValueError:
 		abort(400)
 

@@ -8,23 +8,27 @@ LIGHT = 0
 GAS = 1
 
 # i'm forced to use a global object
-r = Relay(True)
+r = Relay(True, database='states.json')
 
 def light_on():
 	print("Switching light on")
 	r.setEnabled(LIGHT, True)
+	r.save()
 
 def light_off():
 	print("Switching light off")
 	r.setEnabled(LIGHT, False)
+	r.save()
 
 def gas_on():
 	print("Switching gas on")
 	r.setEnabled(GAS, True)
+	r.save()
 
 def gas_off():
 	print("Switching gas off")
 	r.setEnabled(GAS, False)
+	r.save()
 
 def resume():
 	print("resuming to correct states")
