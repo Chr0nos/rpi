@@ -6,11 +6,12 @@ import datetime
 import json
 
 class Relay:
-	def __init__(self, fullinit=False, database=None):
+	def __init__(self, fullinit=False, database=None, ro=False):
 		self.states = [False, False, False, False]
 		self.pins = [12, 11, 10, 8]
 		self.fullinit = fullinit
 		self.database = database
+		self.ro = ro
 		GPIO.setwarnings(False)
 		GPIO.setmode(GPIO.BOARD)
 		GPIO.setup(self.pins, GPIO.OUT, initial=GPIO.HIGH)
@@ -44,7 +45,7 @@ class Relay:
 			self.setEnabled(i, state)
 
 	def save(self):
-		if not self.database:
+		if not self.database or self.ro:
 			return
 		with open(self.database, 'w') as fd:
 			json.dump({'states': self.states}, fd)
