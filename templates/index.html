@@ -10,20 +10,26 @@
     </head>
     <body>
         <div id='main'>
-            {% for sw in switches %}
-            <div class='elem'>
-                <div>{{ sw.name }}</div>
-                <div>
-                    <form method='POST' action='/set' onchange="form_change(this);" enctype="multipart/form-data">
-                        <label class="switch">
-                            <input name='state' type="checkbox" {% if sw.state %}checked {% endif %} />
-                            <span class="slider round {% if sw.state %}checked {% endif %}"></span>
-                        </label>
-                        <input name='index' type="hidden" value="{{ sw.index }}" />
-                    </form>
+            <div id='relay-controll' class='device'>
+                <h2>Relay</h2>
+                {% for sw in switches %}
+                <div class='elem'>
+                    <div class='left'>{{ sw.name }}</div>
+                    <div class='right'>
+                        <form method='POST' action='/set' onchange="form_change(this);" enctype="multipart/form-data">
+                            <label class="switch">
+                                <input name='state' type="checkbox" {% if sw.state %}checked {% endif %} />
+                                <span class="slider round {% if sw.state %}checked {% endif %}"></span>
+                            </label>
+                            <input name='index' type="hidden" value="{{ sw.index }}" />
+                        </form>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <!-- <div id='temperatures' class='device'>
+                <h2>Temperatures</h2>
+            </div> -->
         </div>
     </body>
 </html>
